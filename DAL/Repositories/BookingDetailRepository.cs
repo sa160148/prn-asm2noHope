@@ -5,7 +5,8 @@ public interface IBookingDetailRepository : IBaseRepository<BookingDetail>
 {
     
 }
-public class BookingDetailRepository(FuminiHotelManagementContext context) : BaseRepository<BookingDetail>, IBookingDetailRepository
+public class BookingDetailRepository(FuminiHotelManagementContext context) 
+    : BaseRepository<BookingDetail>(context: context), IBookingDetailRepository
 {
     
 }

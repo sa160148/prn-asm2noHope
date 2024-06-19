@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DAL.Entities;
 
-namespace DAL.Entities;
-
-public partial class RoomInformation
+public partial class RoomInformation : BaseModel
 {
     public int RoomId { get; set; }
 

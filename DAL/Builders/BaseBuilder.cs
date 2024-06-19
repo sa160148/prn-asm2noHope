@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using DAL.Entities;
 
 namespace DAL.Builders;
 
@@ -22,6 +23,11 @@ public class BaseBuilder<T> where T : new()
         return this;
     }   
     public T Build() => _instance;
+
+    /*public BaseBuilder<T> With(Func<T, bool> propertyName, IQueryable<RoomInformation> value)
+    {
+        throw new NotImplementedException();
+    }*/
 }
 public static class BaseBuilderX
 {

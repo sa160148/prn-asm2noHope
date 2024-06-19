@@ -1,7 +1,5 @@
-using BLL.Services;
 using DAL.Repositories;
-using BookingReservationRepository = DAL.Repositories.BookingReservationRepository;
-using IBookingReservationRepository = DAL.Repositories.IBookingReservationRepository;
+using VL.Extensions;
 
 namespace VL;
 
@@ -24,18 +22,7 @@ public static class Program
 
         builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-        builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-        builder.Services.AddScoped<IRoomInformationRepository, RoomInformationRepository>();
-        builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
-        builder.Services.AddScoped<IBookingReservationRepository, BookingReservationRepository>();
-        builder.Services.AddScoped<IBookingDetailRepository, BookingDetailRepository>();
-        
-        builder.Services.AddScoped<ICustomerService, CustomerService>();
-        builder.Services.AddScoped<IRoomInformationService, RoomInformationService>();
-        builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
-        builder.Services.AddScoped<IBookingReservationService, BookingReservationService>();
-        builder.Services.AddScoped<IBookingDetailService, BookingDetailService>();
-
+        builder.Services.AddApplicationService();
         app.UseStaticFiles();
 
         app.UseRouting();

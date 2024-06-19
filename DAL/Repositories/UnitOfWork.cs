@@ -9,7 +9,7 @@ public interface IUnitOfWork : IDisposable
     public IRoomTypeRepository RoomTypes { get; }
     public IBookingReservationRepository BookingReservations { get; }
     public IBookingDetailRepository BookingDetails { get; }
-    int Complete();
+    int Save();
 }
 public class UnitOfWork : IUnitOfWork
 {
@@ -20,16 +20,16 @@ public class UnitOfWork : IUnitOfWork
     public IBookingReservationRepository BookingReservations { get; private set; }
     public IBookingDetailRepository BookingDetails { get; private set; }
 
-    public UnitOfWork(FuminiHotelManagementContext context, ICustomerRepository customer, IRoomInformationRepository roomInformations, IRoomTypeRepository roomTypes, IBookingReservationRepository bookingReservations, IBookingDetailRepository bookingDetails)
+    public UnitOfWork(FuminiHotelManagementContext context)
     {
         _context = context;
-        BookingDetails = new BookingDetailRepository(context: _context);
+        BookingDetails = new BookingDetailRepository(_context);
         Customers = new CustomerRepository(_context);
         RoomInformations = new RoomInformationRepository(_context);
         RoomTypes = new RoomTypeRepository(_context);
         BookingReservations = new BookingReservationRepository(_context);
     }
-    public int Complete()
+    public int Save()
     {
         return _context.SaveChanges();
     }

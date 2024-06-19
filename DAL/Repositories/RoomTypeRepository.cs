@@ -6,7 +6,7 @@ public interface IRoomTypeRepository : IBaseRepository<RoomType>
 {
     
 }
-public class RoomTypeRepository(FuminiHotelManagementContext context) : BaseRepository<RoomType>, IRoomTypeRepository
+public class RoomTypeRepository(FuminiHotelManagementContext context) : BaseRepository<RoomType>(context), IRoomTypeRepository
 {
     
 }

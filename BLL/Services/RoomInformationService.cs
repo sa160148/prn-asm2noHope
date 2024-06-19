@@ -18,7 +18,7 @@ public class RoomInformationService(IUnitOfWork uow) : IRoomInformationService
 
     public RoomInformation GetId(int id)
     {
-        return uow.RoomInformations.GetId(id);
+        return uow.RoomInformations.Get(id);
     }
 
     public List<RoomInformation> Find(string key)

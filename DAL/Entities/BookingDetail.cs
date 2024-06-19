@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DAL.Entities;
 
-namespace DAL.Entities;
-
-public partial class BookingDetail
+public partial class BookingDetail : BaseModel
 {
     public int BookingReservationId { get; set; }
 

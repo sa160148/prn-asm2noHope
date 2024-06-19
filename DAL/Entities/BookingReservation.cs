@@ -1,7 +1,7 @@
 ﻿
 namespace DAL.Entities;
 
-public partial class BookingReservation
+public partial class BookingReservation : BaseModel
 {
     public int BookingReservationId { get; set; }
 
