@@ -22,6 +22,7 @@ public interface IBaseRepository<T> where T : class
     public Task<T> FirstOrDefaultAsync();
     public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     public TKey? Max<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> id);
+    public Task<IEnumerable<T>> GetPage(int pageNumber, int pageSize);
 }
 public class BaseRepository<T>(FuminiHotelManagementContext context, DbSet<T>? set = null) 
     
@@ -114,5 +115,14 @@ public class BaseRepository<T>(FuminiHotelManagementContext context, DbSet<T>? s
     public TKey? Max<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> id)
     {
         return context.Set<T>().Where(predicate).Max(id);
+    }
+
+    public async Task<IEnumerable<T>> GetPage(int pageNumber, int pageSize)
+    {
+        return await context.Set<T>()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
     }
 }

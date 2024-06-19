@@ -9,6 +9,7 @@ public interface IBookingReservationService
 {
     public Task<List<BookingReservation>> All();
     public Task<bool> BookRoom(BookingRequest request ,int customerId);
+    public Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize);
 }
 
 public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationService service) : IBookingReservationService
@@ -20,7 +21,22 @@ public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationS
 
     public async Task<bool> BookRoom(BookingRequest request, int customerId)
     {
-        return await service.BookRoom(request, customerId);
+        Customer customer = uow.Customers.Get(customerId);
+        RoomInformation room = uow.RoomInformations.Get(request.RoomId);
+        if (customer is not null && room is not null)
+        {
+            return await service.BookRoom(request, customerId);
+        }
+        return false;
+    }
+
+    public async Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize)
+    {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            throw new ArgumentException("Invalid page number or page size");
+        }
+        return await service.GetPage(pageNumber, pageSize);
     }
 }
 public class BookingReservationService(IUnitOfWork uow) : IBookingReservationService
@@ -63,5 +79,10 @@ public class BookingReservationService(IUnitOfWork uow) : IBookingReservationSer
         await uow.BookingReservations.AddAsync(bookingReservationBuilder);
         await uow.BookingDetails.AddAsync(bookingDetailBuilder);
         return uow.Save() != 0;
+    }
+
+    public async Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize)
+    {
+        return await uow.BookingReservations.GetPage(pageNumber, pageSize);
     }
 }

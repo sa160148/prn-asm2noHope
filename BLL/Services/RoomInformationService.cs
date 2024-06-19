@@ -5,25 +5,57 @@ using DAL.Repositories;
 namespace BLL.Services;
 public interface IRoomInformationService
 {
-    public List<RoomInformation> All();
-    public RoomInformation GetId(int id);
-    public List<RoomInformation> Find(string key);
+    public Task<List<RoomInformation>> All();
+    public Task<RoomInformation> GetId(int id);
+    public Task<List<RoomInformation>> Find(string key);
+    public Task<IEnumerable<RoomInformation>> GetPage(int pageNumber, int pageSize);
+}
+
+public class RoomInformationServiceProxy(IUnitOfWork? uow, RoomInformationService service) : IRoomInformationService
+{
+    public async Task<List<RoomInformation>> All()
+    {
+        return await service.All();
+    }
+
+    public async Task<RoomInformation> GetId(int id)
+    {
+        return await service.GetId(id);
+    }
+
+    public async Task<List<RoomInformation>> Find(string key)
+    {
+        return await service.Find(key);
+    }
+
+    public async Task<IEnumerable<RoomInformation>> GetPage(int pageNumber, int pageSize)
+    {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            throw new ArgumentException("Invalid page number or page size");
+        }
+        return await service.GetPage(pageNumber, pageSize);
+    }
 }
 public class RoomInformationService(IUnitOfWork uow) : IRoomInformationService
 {
-    public List<RoomInformation> All()
+    public async Task<List<RoomInformation>> All()
     {
-        return uow.RoomInformations.All();
+        return await uow.RoomInformations.AllAsync();
     }
 
-    public RoomInformation GetId(int id)
+    public async Task<RoomInformation> GetId(int id)
     {
-        return uow.RoomInformations.Get(id);
+        return await Task.Run(() => uow.RoomInformations.Get(id));
     }
 
-    public List<RoomInformation> Find(string key)
+    public async Task<List<RoomInformation>> Find(string key)
     {
-        return uow.RoomInformations.Find(e => e.RoomNumber.Contains(key));
+        return await uow.RoomInformations.FindAsync(e => e.RoomNumber.Contains(key));
     }
 
+    public async Task<IEnumerable<RoomInformation>> GetPage(int pageNumber, int pageSize)
+    {
+        return await uow.RoomInformations.GetPage(pageNumber, pageSize);
+    }
 }

@@ -20,9 +20,8 @@ public static class Program
             app.UseExceptionHandler("/Error");
         }
 
-        builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-
         builder.Services.AddApplicationService();
+        
         app.UseStaticFiles();
 
         app.UseRouting();
