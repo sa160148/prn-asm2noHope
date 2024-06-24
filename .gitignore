@@ -1,0 +1,53 @@
+# Binaries and Object Files
+/bin/
+/obj/
+
+# Temporary Files
+*.tmp
+*.user
+*.cache
+
+# Log Files
+*.log
+
+# Local Settings
+Local.settings.json
+
+# Database Files
+*.mdf
+*.ldf
+
+# NuGet Packages
+packages/
+
+# NuGet Cache
+**/bin/Debug/
+**/bin/Release/
+
+# IntelliSense Cache
+*.IntelliSense.Cache
+*.ReSharper.Cache
+
+# Visual Studio Project Files
+*.suo
+*.vbproj
+*.csproj
+
+# Razor Compiled Files
+*.cshtml.compiled
+
+# Visual Studio Directory
+.vs/
+*.suo
+*.vbproj
+*.csproj
+
+# IntelliJ IDEA Directory
+.idea/
+workspace.xml
+
+# Designer Files
+*.Designer.cs
+*.Designer.vb
+*.Designer.cs.dll
+*.Designer.vb.dll
