@@ -22,8 +22,8 @@ namespace VL.Pages.Booking
 
         public async Task OnGetAsync()
         {
-            /*RoomInformation = await _context.RoomInformations
-                .Include(r => r.RoomType).ToListAsync();*/
+            RoomInformation = await _context.RoomInformations
+                .Include(r => r.RoomType).ToListAsync();
         }
     }
 }

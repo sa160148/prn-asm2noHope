@@ -58,8 +58,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PRN221/Projects/SA160148.Asm/VL/Pages/Room/Rooms.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbVxSb29tcy5jc2h0bWw=
+[D:/PRN221/Projects/SA160148.Asm/VL/Pages/Rooms/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PRN221/Projects/SA160148.Asm/VL/Pages/Rooms/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PRN221/Projects/SA160148.Asm/VL/Pages/Shared/_ValidationScriptsPartial.cshtml]

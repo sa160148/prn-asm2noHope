@@ -8,7 +8,7 @@ public class BookingRequest
 {
     public int RoomId { get; set; }
     public bool BookingStatus = true;
-    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-    public DateOnly EndDate { get; set; }
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    public DateTime EndDate { get; set; }
     public double RoomPricePerDay { get; set; }
 }

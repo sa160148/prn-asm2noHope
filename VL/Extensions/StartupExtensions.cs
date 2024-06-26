@@ -1,5 +1,5 @@
 ﻿using BLL.Services;
-using DAL.Entities;
+using DAL.Models;
 using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,15 +21,15 @@ public static class StartupExtensions
         
         service.AddScoped<IUnitOfWork, UnitOfWork>();
         
-        service.AddScoped<FuminiHotelManagementContext>();
+        service.AddScoped<FuminiHotelA2Context>();
 
         service.AddScoped<ICustomerRepository, CustomerRepository>();
         
-        service.AddScoped<IRoomInformationRepository, RoomInformationRepository>();
+        service.AddScoped<IRoomRepository, RoomRepository>();
         
         service.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
         
-        service.AddScoped<IBookingReservationRepository, BookingReservationRepository>();
+        service.AddScoped<IBookingRepository, BookingRepository>();
         
         service.AddScoped<IBookingDetailRepository, BookingDetailRepository>();
          
@@ -38,13 +38,13 @@ public static class StartupExtensions
         
         service.AddScoped<IRoomInformationService>( provider => 
             new RoomInformationServiceProxy(provider.GetRequiredService<IUnitOfWork>(),
-                new RoomInformationService(provider.GetRequiredService<IUnitOfWork>())));
+                new RoomService(provider.GetRequiredService<IUnitOfWork>())));
         
         service.AddScoped<IRoomTypeService, RoomTypeService>();
         
-        service.AddScoped<IBookingReservationService>(serviceProvider =>
-            new BookingReservationServiceProxy(serviceProvider.GetRequiredService<IUnitOfWork>(),
-                new BookingReservationService(serviceProvider.GetRequiredService<IUnitOfWork>())));
+        service.AddScoped<IBookingService>(serviceProvider =>
+            new BookingServiceProxy(serviceProvider.GetRequiredService<IUnitOfWork>(),
+                new BookingService(serviceProvider.GetRequiredService<IUnitOfWork>())));
 
         service.AddScoped<IBookingDetailService, BookingDetailService>();
 

@@ -1,22 +1,23 @@
 ﻿using BLL.DataObjectTransforms;
 using BLL.Utilities;
 using DAL.Builders;
-using DAL.Entities;
+using DAL.Models;
 using DAL.Repositories;
+using Booking = DAL.Models.Booking;
 
 namespace BLL.Services;
 
-public interface IBookingReservationService
+public interface IBookingService
 {
-    public Task<List<BookingReservation>> All();
+    public Task<List<Booking>> All();
     public Task<bool> BookRoom(BookingRequest request, int customerId);
-    public Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize);
+    public Task<IEnumerable<Booking>> GetPage(int pageNumber, int pageSize);
 }
 
-public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationService service)
-    : IBookingReservationService
+public class BookingServiceProxy(IUnitOfWork uow, BookingService service)
+    : IBookingService
 {
-    public async Task<List<BookingReservation>> All()
+    public async Task<List<Booking>> All()
     {
         return await service.All();
     }
@@ -24,7 +25,7 @@ public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationS
     public async Task<bool> BookRoom(BookingRequest request, int customerId)
     {
         Customer customer = uow.Customers.Get(customerId);
-        RoomInformation room = uow.RoomInformations.Get(request.RoomId);
+        Room room = uow.Rooms.Get(request.RoomId);
         if (customer is not null && room is not null)
         {
             return await service.BookRoom(request, customerId);
@@ -33,7 +34,7 @@ public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationS
         return false;
     }
 
-    public async Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize)
+    public async Task<IEnumerable<Booking>> GetPage(int pageNumber, int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {
@@ -44,11 +45,11 @@ public class BookingReservationServiceProxy(IUnitOfWork uow, BookingReservationS
     }
 }
 
-public class BookingReservationService(IUnitOfWork uow) : IBookingReservationService
+public class BookingService(IUnitOfWork uow) : IBookingService
 {
-    public async Task<List<BookingReservation>> All()
+    public async Task<List<Booking>> All()
     {
-        return await uow.BookingReservations.AllAsync();
+        return await uow.Bookings.AllAsync();
     }
 
     public async Task<bool> BookRoom(BookingRequest request, int customerId)
@@ -58,17 +59,17 @@ public class BookingReservationService(IUnitOfWork uow) : IBookingReservationSer
             uow.BeginTransaction();
             
             int roomId = request.RoomId;
-            RoomInformation roomInfo = uow.RoomInformations.Get(roomId);
+            Room roomInfo = uow.Rooms.Get(roomId);
             Customer customer = uow.Customers.Get(customerId);
-            double totalPrice = uow.BookingReservations
+            double totalPrice = uow.Bookings
                 .TotalPrice(roomId, Utility.DayNumberCaculator(request.EndDate, request.StartDate));
 
             var bookingReservationBuilder =
-                new BaseBuilder<BookingReservation>()
-                    .With(br => br.BookingReservationId, uow.BookingReservations.MaxId() + 1)
-                    .With(br => br.BookingDate, Utility.CurrentDate())
+                new BaseBuilder<Booking>()
+                    .With(br => br.Id, uow.Bookings.MaxId() + 1)
+                    .With(br => br.BookingDate, DateTime.Now)
                     .With(br => br.CustomerId, customerId)
-                    .With(br => br.BookingStatus, true)
+                    .With(br => br.Status, true)
                     .With(br => br.TotalPrice, totalPrice)
                     .With(br => br.Customer, customer)
                     .Build();
@@ -76,16 +77,16 @@ public class BookingReservationService(IUnitOfWork uow) : IBookingReservationSer
             var bookingDetailBuilder =
                 new BaseBuilder<BookingDetail>()
                     .With(bd => bd.RoomId, roomId)
-                    .With(bd => bd.BookingReservation, bookingReservationBuilder)
-                    .With(bd => bd.StartDate, Utility.CurrentDate())
+                    .With(bd => bd.Booking, bookingReservationBuilder)
+                    .With(bd => bd.StartDate, DateTime.Now)
                     .With(bd => bd.EndDate, request.EndDate)
-                    .With(bd => bd.ActualPrice, roomInfo.RoomPricePerDay)
+                    .With(bd => bd.ActualPrice, roomInfo.PricePerDay)
                     .With(bd => bd.Room, roomInfo)
                     .Build();
 
             bookingReservationBuilder.BookingDetails.Add(bookingDetailBuilder);
 
-            await uow.BookingReservations.AddAsync(bookingReservationBuilder);
+            await uow.Bookings.AddAsync(bookingReservationBuilder);
             await uow.BookingDetails.AddAsync(bookingDetailBuilder);
             
             uow.Commit();
@@ -99,8 +100,8 @@ public class BookingReservationService(IUnitOfWork uow) : IBookingReservationSer
         }
     }
 
-    public async Task<IEnumerable<BookingReservation>> GetPage(int pageNumber, int pageSize)
+    public async Task<IEnumerable<Booking>> GetPage(int pageNumber, int pageSize)
     {
-        return await uow.BookingReservations.GetPage(pageNumber, pageSize);
+        return await uow.Bookings.GetPage(pageNumber, pageSize);
     }
 }

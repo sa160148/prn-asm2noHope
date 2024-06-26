@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using DAL.Entities;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -25,7 +25,7 @@ public interface IBaseRepository<T> where T : class
     public Task<int> SaveAsync();
     public Task<IEnumerable<T>> GetPage(int pageNumber, int pageSize);
 }
-public class BaseRepository<T>(FuminiHotelManagementContext context, DbSet<T>? set = null) 
+public class BaseRepository<T>(FuminiHotelA2Context context, DbSet<T>? set = null) 
     
     : IBaseRepository<T> where T : class
 {

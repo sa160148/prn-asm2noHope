@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DAL.Repositories;
@@ -6,9 +6,9 @@ namespace DAL.Repositories;
 public interface IUnitOfWork : IDisposable
 {
     public ICustomerRepository Customers { get; }
-    public IRoomInformationRepository RoomInformations { get; }
+    public IRoomRepository Rooms { get; }
     public IRoomTypeRepository RoomTypes { get; }
-    public IBookingReservationRepository BookingReservations { get; }
+    public IBookingRepository Bookings { get; }
     public IBookingDetailRepository BookingDetails { get; }
     public void BeginTransaction();
     public void Commit();
@@ -18,22 +18,22 @@ public interface IUnitOfWork : IDisposable
 }
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly FuminiHotelManagementContext _context;
+    private readonly FuminiHotelA2Context _context;
     private IDbContextTransaction _transaction;
     public ICustomerRepository Customers { get; private set; }
-    public IRoomInformationRepository RoomInformations { get; private set; }
+    public IRoomRepository Rooms { get; private set; }
     public IRoomTypeRepository RoomTypes { get; private set; }
-    public IBookingReservationRepository BookingReservations { get; private set; }
+    public IBookingRepository Bookings { get; private set; }
     public IBookingDetailRepository BookingDetails { get; private set; }
 
-    public UnitOfWork(FuminiHotelManagementContext context)
+    public UnitOfWork(FuminiHotelA2Context context)
     {
         _context = context;
         BookingDetails = new BookingDetailRepository(_context);
         Customers = new CustomerRepository(_context);
-        RoomInformations = new RoomInformationRepository(_context);
+        Rooms = new RoomRepository(_context);
         RoomTypes = new RoomTypeRepository(_context);
-        BookingReservations = new BookingReservationRepository(_context);
+        Bookings = new BookingRepository(_context);
     }
     public int Save()
     {
