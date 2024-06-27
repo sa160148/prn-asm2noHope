@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using DAL.Models;
 
 namespace DAL.Builders;
 
@@ -12,27 +12,27 @@ public class RoomTypeBuilder
     }
     public RoomTypeBuilder WithRoomTypeId(int roomTypeId)
     {
-        _roomType.RoomTypeId = roomTypeId;
+        _roomType.Id = roomTypeId;
         return this;
     }
-    public RoomTypeBuilder WithRoomTypeName(string roomTypeName)
+    public RoomTypeBuilder WithRoomTypeName(string typeName)
     {
-        _roomType.RoomTypeName = roomTypeName;
+        _roomType.TypeName = typeName;
         return this;
     }
-    public RoomTypeBuilder WithTypeDescription(string typeDescription)
+    public RoomTypeBuilder WithTypeDescription(string description)
     {
-        _roomType.TypeDescription = typeDescription;
+        _roomType.Description = description;
         return this;
     }
-    public RoomTypeBuilder WithTypeNote(string typeNote)
+    public RoomTypeBuilder WithTypeNote(string note)
     {
-        _roomType.TypeNote = typeNote;
+        _roomType.Note = note;
         return this;
     }
-    public RoomTypeBuilder WithRoomInformations(List<RoomInformation> roomInformations)
+    public RoomTypeBuilder WithRoomInformations(List<Room> rooms)
     {
-        _roomType.RoomInformations = roomInformations;
+        _roomType.Rooms = rooms;
         return this;
     }
     public RoomType Build()

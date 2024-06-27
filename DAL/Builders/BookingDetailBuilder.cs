@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using DAL.Models;
 
 namespace DAL.Builders;
 
@@ -10,9 +10,9 @@ public class BookingDetailBuilder
     {
         _bookingDetail = new BookingDetail();
     }
-    public BookingDetailBuilder WithBookingReservervationId(int bookingReservationId)
+    public BookingDetailBuilder WithBookingReservervationId(int bookingId)
     {
-        _bookingDetail.BookingReservationId = bookingReservationId;
+        _bookingDetail.BookingId = bookingId;
         return this;
     }
     public BookingDetailBuilder WithRoomId(int roomId)
@@ -20,12 +20,12 @@ public class BookingDetailBuilder
         _bookingDetail.RoomId = roomId;
         return this;
     }
-    public BookingDetailBuilder WithStartDate(DateOnly startDate)
+    public BookingDetailBuilder WithStartDate(DateTime startDate)
     {
         _bookingDetail.StartDate = startDate;
         return this;
     }
-    public BookingDetailBuilder WithEndDate(DateOnly endDate)
+    public BookingDetailBuilder WithEndDate(DateTime endDate)
     {
         _bookingDetail.EndDate = endDate;
         return this;
@@ -35,12 +35,12 @@ public class BookingDetailBuilder
         _bookingDetail.ActualPrice = actualPrice;
         return this;
     }
-    public BookingDetailBuilder WithBookingReservation(BookingReservation bookingReservation)
+    public BookingDetailBuilder WithBookingReservation(Booking bookingReservation)
     {
-        _bookingDetail.BookingReservation = bookingReservation;
+        _bookingDetail.Booking = bookingReservation;
         return this;
     }
-    public BookingDetailBuilder WithRoom(RoomInformation room)
+    public BookingDetailBuilder WithRoom(Room room)
     {
         _bookingDetail.Room = room;
         return this;

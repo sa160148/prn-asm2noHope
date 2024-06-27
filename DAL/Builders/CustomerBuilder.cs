@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using DAL.Models;
 
 namespace DAL.Builders;
 
@@ -12,12 +12,12 @@ public class CustomerBuilder
     }
     public CustomerBuilder WithCustomerId(int customerId)
     {
-        _customer.CustomerId = customerId;
+        _customer.Id = customerId;
         return this;
     }
-    public CustomerBuilder WithCustomerFullName(string customerFullName)
+    public CustomerBuilder WithCustomerFullName(string fullName)
     {
-        _customer.CustomerFullName = customerFullName;
+        _customer.FullName = fullName;
         return this;
     }
     public CustomerBuilder WithTelephone(string telephone)
@@ -25,19 +25,19 @@ public class CustomerBuilder
         _customer.Telephone = telephone;
         return this;
     }
-    public CustomerBuilder WithEmailAddress(string emailAddress)
+    public CustomerBuilder WithEmailAddress(string email)
     {
-        _customer.EmailAddress = emailAddress;
+        _customer.Email = email;
         return this;
     }
-    public CustomerBuilder WithCustomerBirthday(DateOnly customerBirthday)
+    public CustomerBuilder WithCustomerBirthday(DateTime birthday)
     {
-        _customer.CustomerBirthday = customerBirthday;
+        _customer.Birthday = birthday;
         return this;
     }
-    public CustomerBuilder WithCustomerStatus(bool customerStatus)
+    public CustomerBuilder WithCustomerStatus(bool status)
     {
-        _customer.CustomerStatus = customerStatus;
+        _customer.Status = status;
         return this;
     }
     public CustomerBuilder WithPassword(string password)
@@ -45,9 +45,9 @@ public class CustomerBuilder
         _customer.Password = password;
         return this;
     }
-    public CustomerBuilder WithBookingReservations(List<BookingReservation> bookingReservations)
+    public CustomerBuilder WithBookingReservations(List<Booking> bookings)
     {
-        _customer.BookingReservations = bookingReservations;
+        _customer.Bookings = bookings;
         return this;
     }
     public Customer Build()

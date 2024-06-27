@@ -1,18 +1,18 @@
-﻿using DAL.Entities;
+﻿using DAL.Models;
 
 namespace DAL.Builders;
 
 public class RoomInformationBuilder
 {
-    private RoomInformation _roomInformation;
+    private Room _roomInformation;
 
     public RoomInformationBuilder()
     {
-        _roomInformation = new RoomInformation();
+        _roomInformation = new Room();
     }
     public RoomInformationBuilder WithRoomId(int roomId)
     {
-        _roomInformation.RoomId = roomId;
+        _roomInformation.Id = roomId;
         return this;
     }
     public RoomInformationBuilder WithRoomNumber(string roomNumber)
@@ -20,14 +20,14 @@ public class RoomInformationBuilder
         _roomInformation.RoomNumber = roomNumber;
         return this;
     }
-    public RoomInformationBuilder WithRoomDetailDescription(string roomDetailDescription)
+    public RoomInformationBuilder WithRoomDetailDescription(string detailDescription)
     {
-        _roomInformation.RoomDetailDescription = roomDetailDescription;
+        _roomInformation.DetailDescription = detailDescription;
         return this;
     }
-    public RoomInformationBuilder WithRoomMaxCapacity(int roomMaxCapacity)
+    public RoomInformationBuilder WithRoomMaxCapacity(int maxCapacity)
     {
-        _roomInformation.RoomMaxCapacity = roomMaxCapacity;
+        _roomInformation.MaxCapacity = maxCapacity;
         return this;
     }
     public RoomInformationBuilder WithRoomTypeId(int roomTypeId)
@@ -35,14 +35,14 @@ public class RoomInformationBuilder
         _roomInformation.RoomTypeId = roomTypeId;
         return this;
     }
-    public RoomInformationBuilder WithRoomStatus(bool roomStatus)
+    public RoomInformationBuilder WithRoomStatus(bool status)
     {
-        _roomInformation.RoomStatus = roomStatus;
+        _roomInformation.Status = status;
         return this;
     }
-    public RoomInformationBuilder WithRoomPricePerDay(double roomPricePerDay)
+    public RoomInformationBuilder WithRoomPricePerDay(double pricePerDay)
     {
-        _roomInformation.RoomPricePerDay = roomPricePerDay;
+        _roomInformation.PricePerDay = pricePerDay;
         return this;
     }
     public RoomInformationBuilder WithBookingDetails(List<BookingDetail> bookingDetails)
@@ -55,7 +55,7 @@ public class RoomInformationBuilder
         _roomInformation.RoomType = roomType;
         return this;
     }
-    public RoomInformation Build()
+    public Room Build()
     {
         return _roomInformation;
     }

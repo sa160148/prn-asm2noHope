@@ -1,5 +1,5 @@
 ﻿using DAL.Models;
-using BookingDetail = DAL.Entities.BookingDetail;
+using BookingDetail = DAL.Models.BookingDetail;
 
 namespace DAL.Repositories;
 public interface IBookingDetailRepository : IBaseRepository<BookingDetail>

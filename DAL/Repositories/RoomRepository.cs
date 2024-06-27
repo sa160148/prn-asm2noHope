@@ -1,5 +1,4 @@
-﻿using DAL.Entities;
-using DAL.Models;
+﻿using DAL.Models;
 
 namespace DAL.Repositories;
 

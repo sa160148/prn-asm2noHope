@@ -1,5 +1,5 @@
 using BLL.Services;
-using DAL.Entities;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -16,10 +16,7 @@ public class IndexModel : PageModel
         _roomService = roomService;
     }
 
-    public async Task OnGetAsync()
+    public void OnGet()
     {
-        IEnumerable<RoomInformation> roomInformations = null;
-        roomInformations = await _roomService.AllAsync();
-        ViewData["RoomInformations"] = roomInformations; // Pass the data to the view
     }
 }

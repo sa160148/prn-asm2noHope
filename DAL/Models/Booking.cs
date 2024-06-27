@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DAL.Entities;
+using DAL.Models;
 
 namespace DAL.Models;
 

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-using DAL.Entities;
+using DAL.Models;
 
 namespace DAL.Builders;
 
