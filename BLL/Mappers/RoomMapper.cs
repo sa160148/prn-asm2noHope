@@ -3,8 +3,13 @@ using DAL.Builders;
 using DAL.Models;
 
 namespace BLL.Mappers;
-
-public class RoomInformationMapper
+public interface IRoomMapeer
+{
+    public List<RoomInformationResponse> Entity2RoomsResponse(List<Room> rooms);
+    public IEnumerable<RoomsPageResponse> Entity2RoomsPage(IEnumerable<Room> rooms);
+    public Task<IEnumerable<RoomsPageResponse>> Entity2RoomsPageAsync(IEnumerable<Room> rooms);
+}
+public class RoomMapper : IRoomMapeer
 {
     public List<RoomInformationResponse> Entity2RoomsResponse(List<Room> rooms)
     {
@@ -23,15 +28,19 @@ public class RoomInformationMapper
         ).ToList();
     }
 
-    public IEnumerable<RoomsPageResponse> Entity2RoomsPage(List<Room> rooms)
+    public IEnumerable<RoomsPageResponse> Entity2RoomsPage(IEnumerable<Room> rooms)
     {
         return rooms.Select(room => new BaseBuilder<RoomsPageResponse>()
             .With(roompage => roompage.Id, room.Id)
             .With(roompage => roompage.RoomNumber, room.RoomNumber)
             .With(roompage => roompage.Status, room.Status)
             .With(roompage => roompage.PricePerDay, room.PricePerDay)
-            .With(roompage => roompage.TypeName, room.RoomType.TypeName ?? "Unknown")
+            .With(roompage => roompage.TypeName, room.RoomType?.TypeName ?? "Unknown")
             .Build()
         ).ToList();
+    }
+    public async Task<IEnumerable<RoomsPageResponse>> Entity2RoomsPageAsync(IEnumerable<Room> rooms)
+    {
+        return await Task.Run(() => Entity2RoomsPage(rooms));
     }
 }

@@ -24,10 +24,22 @@ public class BookingServiceProxy(IUnitOfWork uow, BookingService service)
 
     public async Task<bool> BookRoom(BookingRequest request, int customerId)
     {
-        Customer customer = uow.Customers.Get(customerId);
-        Room room = uow.Rooms.Get(request.RoomId);
+        if (request.StartDate < DateTime.Now || request.EndDate < request.StartDate)
+        {
+            return false;
+        }
+        if (request.StartDate.Hour > request.EndDate.Hour)
+        {
+            return false;
+        }
+        Customer? customer = uow.Customers.Get(customerId);
+        Room? room = uow.Rooms.Get(request.Id);
         if (customer is not null && room is not null)
         {
+            if (room.Status == true)
+            {
+                return false;
+            }
             return await service.BookRoom(request, customerId);
         }
 
@@ -58,15 +70,15 @@ public class BookingService(IUnitOfWork uow) : IBookingService
         {
             uow.BeginTransaction();
             
-            int roomId = request.RoomId;
-            Room roomInfo = uow.Rooms.Get(roomId);
-            Customer customer = uow.Customers.Get(customerId);
+            int roomId = request.Id;
+            Room? roomInfo = uow.Rooms.Get(roomId);
+            Customer? customer = uow.Customers.Get(customerId);
             double totalPrice = uow.Bookings
                 .TotalPrice(roomId, Utility.DayNumberCaculator(request.EndDate, request.StartDate));
 
-            var bookingReservationBuilder =
+            var bookingBuilder =
                 new BaseBuilder<Booking>()
-                    .With(br => br.Id, uow.Bookings.MaxId() + 1)
+                    .With(br => br.Id, uow.Bookings.Max(booking => booking.Id) + 1)
                     .With(br => br.BookingDate, DateTime.Now)
                     .With(br => br.CustomerId, customerId)
                     .With(br => br.Status, true)
@@ -76,17 +88,18 @@ public class BookingService(IUnitOfWork uow) : IBookingService
 
             var bookingDetailBuilder =
                 new BaseBuilder<BookingDetail>()
+                    .With(bd => bd.Id, uow.BookingDetails.Max(detail => detail.Id) + 1)
                     .With(bd => bd.RoomId, roomId)
-                    .With(bd => bd.Booking, bookingReservationBuilder)
+                    .With(bd => bd.Booking, bookingBuilder)
                     .With(bd => bd.StartDate, DateTime.Now)
                     .With(bd => bd.EndDate, request.EndDate)
-                    .With(bd => bd.ActualPrice, roomInfo.PricePerDay)
+                    .With(bd => bd.ActualPrice, roomInfo?.PricePerDay ?? 0)
                     .With(bd => bd.Room, roomInfo)
                     .Build();
 
-            bookingReservationBuilder.BookingDetails.Add(bookingDetailBuilder);
+            bookingBuilder.BookingDetails.Add(bookingDetailBuilder);
 
-            await uow.Bookings.AddAsync(bookingReservationBuilder);
+            await uow.Bookings.AddAsync(bookingBuilder);
             await uow.BookingDetails.AddAsync(bookingDetailBuilder);
             
             uow.Commit();

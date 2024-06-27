@@ -1,0 +1,35 @@
+@page
+@model VL.Pages.Rooms.Update
+
+@{
+}
+
+@using BLL.Services;
+@using BLL.DataObjectTransforms;
+@*@model BLL.DataObjectTransforms.RoomModifyResponse*@
+@{
+    RoomModifyResponse rumResponse = ViewData["rumResponse"] as RoomModifyResponse;
+}
+<div >
+    <h1>Update a room</h1> <br/>
+    <form method="post">
+        <input asp-for="Room.Id" type="text" required="required" value="@rumResponse.Id" hidden="hidden"/>
+        Room number: <input asp-for="Room.RoomNumber" type="text" required value="@rumResponse.RoomNumber"/> <br/>
+        Room max capacity: <input asp-for="Room.MaxCapacity" type="number" value="@rumResponse.MaxCapacity"/> <br/>
+        Room price per day: <input asp-for="Room.PricePerDay" type="text" value="@rumResponse.PricePerDay"/> <br/>
+        Room type:
+        <select asp-for="Room.RoomTypeId" required>
+            <option value="1">Standard room</option>
+            <option value="2">Suite</option>
+            <option value="3">Deluxe room</option>
+            <option value="4">Executive room</option>
+            <option value="5">Family Room</option>
+            <option value="6">Connecting Room</option>
+            <option value="7">Penthouse Suite</option>
+            <option value="8">Bungalow</option>
+        </select> <br/>
+        Room description: <input asp-for="Room.DetailDescription" type="text" value="@rumResponse.DetailDescription"/> <br/>
+        Room status: <input asp-for="Room.Status" type="text" value="@rumResponse.Status"/> <br/>
+        <input type="submit" value="Update"/>
+    </form>
+</div>

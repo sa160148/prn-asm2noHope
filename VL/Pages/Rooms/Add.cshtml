@@ -1,0 +1,28 @@
+@page
+@model VL.Pages.Rooms.Add
+
+@{
+}
+@using BLL.Services;
+@using BLL.DataObjectTransforms;
+@*@model BLL.DataObjectTransforms.RoomCreateRequest*@
+<div >
+    <h1>Add a room</h1> <br/>
+    <form method="post">
+        Room number: <input asp-for="Room.RoomNumber" type="text" required/> <br/>
+        Room max capacity: <input asp-for="Room.MaxCapacity" type="number"/> <br/>
+        Room price per day: <input asp-for="Room.PricePerDay" type="text"/> <br/>
+        Room type: 
+        <select asp-for="Room.RoomTypeId" required>
+            <option value="1">Standard room</option>
+            <option value="2">Suite</option>
+            <option value="3">Deluxe room</option>
+            <option value="4">Executive room</option>
+            <option value="5">Family Room</option>
+            <option value="6">Connecting Room</option>
+            <option value="7">Penthouse Suite</option>
+            <option value="8">Bungalow</option>
+        </select> <br/>
+        <input type="submit" value="Add"/>
+    </form>
+</div>

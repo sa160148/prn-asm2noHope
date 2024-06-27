@@ -17,3 +17,13 @@ public class RoomsPageResponse
     public double? PricePerDay { get; set; }
     public string TypeName { get; set; }
 }
+public class RoomModifyResponse
+{
+    public int? Id { get; set; }
+    public string? RoomNumber { get; set; }
+    public int? RoomTypeId { get; set; }
+    public int? PricePerDay { get; set; }
+    public int? MaxCapacity { get; set; }
+    public string? DetailDescription { get; set; }
+    public bool? Status { get; set; }
+}

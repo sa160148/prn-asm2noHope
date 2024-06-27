@@ -1,4 +1,5 @@
-﻿using BLL.Services;
+﻿using BLL.Mappers;
+using BLL.Services;
 using DAL.Models;
 using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -35,10 +36,9 @@ public static class StartupExtensions
          
         
         service.AddScoped<ICustomerService, CustomerService>();
-        
-        service.AddScoped<IRoomInformationService>( provider => 
-            new RoomInformationServiceProxy(provider.GetRequiredService<IUnitOfWork>(),
-                new RoomService(provider.GetRequiredService<IUnitOfWork>())));
+
+        service.AddScoped<IRoomService>(provider =>
+            new RoomService(provider.GetRequiredService<IUnitOfWork>() , provider.GetService<IRoomMapeer>()));
         
         service.AddScoped<IRoomTypeService, RoomTypeService>();
         
@@ -51,8 +51,8 @@ public static class StartupExtensions
         #endregion
         
         #region Transient
-        
-        
+
+        service.AddTransient<IRoomMapeer, RoomMapper>();
 
         #endregion
         

@@ -8,7 +8,7 @@ public interface IBaseRepository<T> where T : class
 {
     public List<T> All();
     public Task<List<T>> AllAsync();
-    public T Get<TKey>(TKey id);
+    public T? Get<TKey>(TKey id);
     public IQueryable<T> Get();
     public IQueryable<T> Get(Expression<Func<T, bool>> predicate);
     public Task<T?> GetIdAsync(int id);
@@ -21,7 +21,7 @@ public interface IBaseRepository<T> where T : class
     public Task<List<T>> FindAsync(Expression<Func<T, bool>> predic);
     public Task<T> FirstOrDefaultAsync();
     public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-    public TKey? Max<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> id);
+    public TKey? Max<TKey>(/*Expression<Func<T, bool>> predicate,*/ Expression<Func<T, TKey>> id);
     public Task<int> SaveAsync();
     public Task<IEnumerable<T>> GetPage(int pageNumber, int pageSize);
 }
@@ -46,9 +46,9 @@ public class BaseRepository<T>(FuminiHotelA2Context context, DbSet<T>? set = nul
         return await context.Set<T>().ToListAsync();
     }
 
-    public T Get<TKey>(TKey id)
+    public T? Get<TKey>(TKey id)
     {
-        return context.Set<T>().Find((object) id) ?? throw new InvalidOperationException();
+        return context.Set<T>().Find((object) id) ?? null;
     }
 
     public IQueryable<T> Get()
@@ -112,9 +112,9 @@ public class BaseRepository<T>(FuminiHotelA2Context context, DbSet<T>? set = nul
         return await context.Set<T>().FirstOrDefaultAsync(predicate) ?? null!;
     }
 
-    public TKey? Max<TKey>(Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> id)
+    public TKey? Max<TKey>(/*Expression<Func<T, bool>> predicate,*/ Expression<Func<T, TKey>> id)
     {
-        return context.Set<T>().Where(predicate).Max(id);
+        return context.Set<T>().Max(id);
     }
 
     public async Task<int> SaveAsync()

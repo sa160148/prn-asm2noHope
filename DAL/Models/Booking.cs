@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL.Models;
-
-namespace DAL.Models;
+﻿namespace DAL.Models;
 
 public partial class Booking : GenericModel
 {

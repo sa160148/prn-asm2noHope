@@ -1,0 +1,34 @@
+@page
+@model VL.Pages.Rooms.Index
+
+@{
+}
+@using BLL.Services;
+@using BLL.DataObjectTransforms;
+@inject IRoomService RoomsService
+@{
+    IEnumerable<RoomsPageResponse> Roomss = null;
+    Roomss = await RoomsService.GetPage(1, 3);
+}
+<h1>list rooms</h1>
+<a asp-page="Add">add room</a>
+<table>
+    <tr>
+        <th>id</th>
+        <th>room number</th>
+        <th>price</th>
+        <th>type</th>
+        <th>status</th>
+    </tr>
+    @foreach (var room in Roomss)
+    {
+        <tr>
+            <td>@room.Id</td>
+            <td>@room.RoomNumber</td>
+            <td>@room.PricePerDay</td>
+            <td>@room.TypeName</td>
+            <td>@room.Status</td>
+            <td><a asp-action="Update" asp-route="@room.Id">update</a></td>
+        </tr>
+    }
+</table>
