@@ -15,6 +15,7 @@ public interface IUnitOfWork : IDisposable
     public void Rollback();
     
     public int Save();
+    public Task<int> SaveAsync();
 }
 public class UnitOfWork : IUnitOfWork
 {
@@ -39,6 +40,12 @@ public class UnitOfWork : IUnitOfWork
     {
         return _context.SaveChanges();
     }
+
+    public async Task<int> SaveAsync()
+    {
+        return await this._context.SaveChangesAsync();
+    }
+
     public void BeginTransaction()
     {
         _transaction = _context.Database.BeginTransaction();

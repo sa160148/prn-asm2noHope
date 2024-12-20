@@ -1,0 +1,19 @@
+@page "Add"
+@model VL.Pages.Bookings.Add
+
+@{
+}
+<div>
+    <h1>Book a room</h1>
+    <form method="post">
+        <br/> @Html.DisplayNameFor(data => data.Booking.BookingDetail.Room.RoomNumber) : @Model.Booking.BookingDetail.Room.RoomNumber <br/>
+        <br/> @Html.DisplayNameFor(data => data.Booking.BookingDetail.Room.MaxCapacity) : @Model.Booking.BookingDetail.Room.MaxCapacity <br/>
+        <br/> @Html.DisplayNameFor(data => data.Booking.BookingDetail.Room.PricePerDay) : @Model.Booking.BookingDetail.Room.PricePerDay <br/>
+        <br/> @Html.DisplayNameFor(data => data.Booking.TotalPrice) : @Model.Booking.TotalPrice <br/>
+        <br/> @Html.DisplayNameFor(data => data.Booking.BookingDetail.StartDate) : @Model.Booking.BookingDetail.StartDate <br/>
+        <input type="hidden" asp-route-userId="3"/>
+        <input type="hidden" asp-route-rumId="@Model.Booking.BookingDetail.Room.Id"/>
+        <input type="date" name="end"/> <br/>
+        <input type="submit" value="Book"/> <br/>
+    </form>
+</div>

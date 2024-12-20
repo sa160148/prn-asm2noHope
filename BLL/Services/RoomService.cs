@@ -1,25 +1,27 @@
-﻿using BLL.DataObjectTransforms;
+﻿using AutoMapper;
+using BLL.DataObjectTransforms;
 using BLL.Mappers;
 using DAL.Builders;
 using DAL.Models;
 using DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Booking = DAL.Models.Booking;
 
 namespace BLL.Services;
 public interface IRoomService
 {
-    public Task<List<Room>> AllAsync();
+    public Task<List<RoomsPageResponse>> AllAsync();
     public Task<Room> GetIdAsync(int id);
     public Room GetId(int id);
     public Task<List<Room>> Find(string key);
     public Task<IEnumerable<Room>> Get(string key);
-    public Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize);
+    /*public Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize);*/
     public void Add(RoomCreateRequest room);
 }
 
-public class RoomServiceProxy(RoomService service, IUnitOfWork uow/*, IRoomMapeer? roomMapeer = null*/) : IRoomService
+public class RoomServiceProxy(RoomService service) : IRoomService
 {
-    public async Task<List<Room>> AllAsync()
+    public async Task<List<RoomsPageResponse>> AllAsync()
     {
         return await service.AllAsync();
     }
@@ -44,14 +46,14 @@ public class RoomServiceProxy(RoomService service, IUnitOfWork uow/*, IRoomMapee
         return await service.Get(key);
     }
 
-    public async Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize)
+    /*public async Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {
             throw new ArgumentException("Invalid page number or page size");
         }
         return await service.GetPage(pageNumber, pageSize);
-    }
+    }*/
 
     public void Add(RoomCreateRequest room)
     {
@@ -62,11 +64,12 @@ public class RoomServiceProxy(RoomService service, IUnitOfWork uow/*, IRoomMapee
         service.Add(room);
     }
 }
-public class RoomService(IUnitOfWork uow, IRoomMapeer? roomMapeer = null) : IRoomService
+public class RoomService(IUnitOfWork uow, IMapper mapper) : IRoomService
 {
-    public async Task<List<Room>> AllAsync()
+    public async Task<List<RoomsPageResponse>> AllAsync()
     {
-        return await uow.Rooms.AllAsync();
+        IQueryable<Room> query = uow.Rooms.GetAll().Include(room => room.RoomType);
+        return await query.Select(room => mapper!.Map<RoomsPageResponse>(room)).ToListAsync();
     }
 
     public async Task<Room> GetIdAsync(int id)
@@ -89,11 +92,11 @@ public class RoomService(IUnitOfWork uow, IRoomMapeer? roomMapeer = null) : IRoo
         return await uow.Rooms.FindAsync(room => room.RoomNumber == key);
     }
 
-    public async Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize)
+    /*public async Task<IEnumerable<RoomsPageResponse>> GetPage(int pageNumber, int pageSize)
     {
         var rooms = await uow.Rooms.GetPage(pageNumber, pageSize);
         return await roomMapeer.Entity2RoomsPageAsync(rooms);
-    }
+    }*/
 
     public void Add(RoomCreateRequest room)
     {

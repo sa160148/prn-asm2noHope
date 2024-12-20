@@ -1,6 +1,6 @@
 ﻿namespace DAL.Models;
 
-public partial class Booking : GenericModel
+public class Booking : GenericModel
 {
     /*public int Id { get; set; }*/
 

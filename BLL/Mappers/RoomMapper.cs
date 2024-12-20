@@ -5,15 +5,15 @@ using DAL.Models;
 namespace BLL.Mappers;
 public interface IRoomMapeer
 {
-    public List<RoomInformationResponse> Entity2RoomsResponse(List<Room> rooms);
-    public IEnumerable<RoomsPageResponse> Entity2RoomsPage(IEnumerable<Room> rooms);
-    public Task<IEnumerable<RoomsPageResponse>> Entity2RoomsPageAsync(IEnumerable<Room> rooms);
+    /*public List<RoomResponse> Entity2RoomsResponse(List<Room> rooms);
+    public List<RoomsPageResponse> Entity2RoomsPage(List<Room> rooms);
+    public Task<List<RoomsPageResponse>> Entity2RoomsPageAsync(List<Room> rooms);*/
 }
-public class RoomMapper : IRoomMapeer
+/*public class RoomMapper : IRoomMapeer
 {
-    public List<RoomInformationResponse> Entity2RoomsResponse(List<Room> rooms)
+    public List<RoomResponse> Entity2RoomsResponse(List<Room> rooms)
     {
-        return rooms.Select(room => new BaseBuilder<RoomInformationResponse>()
+        return rooms.Select(room => new BaseBuilder<RoomResponse>()
             .With(roominfo => roominfo.Id, room.Id)
             .With(roominfo => roominfo.PricePerDay, room.PricePerDay)
             .With(roominfo => roominfo.RoomNumber, room.RoomNumber)
@@ -28,19 +28,27 @@ public class RoomMapper : IRoomMapeer
         ).ToList();
     }
 
-    public IEnumerable<RoomsPageResponse> Entity2RoomsPage(IEnumerable<Room> rooms)
+    public List<RoomsPageResponse> Entity2RoomsPage(List<Room> rooms)
     {
         return rooms.Select(room => new BaseBuilder<RoomsPageResponse>()
             .With(roompage => roompage.Id, room.Id)
             .With(roompage => roompage.RoomNumber, room.RoomNumber)
             .With(roompage => roompage.Status, room.Status)
             .With(roompage => roompage.PricePerDay, room.PricePerDay)
-            .With(roompage => roompage.TypeName, room.RoomType?.TypeName ?? "Unknown")
+            .With(roompage => roompage.RoomType.TypeName, room.RoomType.TypeName ?? "Unknown")
             .Build()
         ).ToList();
     }
-    public async Task<IEnumerable<RoomsPageResponse>> Entity2RoomsPageAsync(IEnumerable<Room> rooms)
+    public Task<List<RoomsPageResponse>> Entity2RoomsPageAsync(List<Room> rooms)
     {
-        return await Task.Run(() => Entity2RoomsPage(rooms));
+        /*return await Task.FromResult(Entity2RoomsPage(rooms: rooms));#1#
+        return Task.FromResult(rooms.Select(room => new BaseBuilder<RoomsPageResponse>()
+            .With(roompage => roompage.Id, room.Id)
+            .With(roompage => roompage.RoomNumber, room.RoomNumber)
+            .With(roompage => roompage.Status, room.Status)
+            .With(roompage => roompage.PricePerDay, room.PricePerDay)
+            .With(roompage => roompage.RoomType.TypeName, room.RoomType.TypeName ?? "Unknown")
+            .Build()
+        ).ToList());
     }
-}
+}*/

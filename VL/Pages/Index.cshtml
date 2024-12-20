@@ -1,12 +1,31 @@
-﻿@page "/x"
+﻿@page
 @model IndexModel
-@using BLL.Services
-@using BLL.DataObjectTransforms
-@using DAL.Models
 @{
     
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
+<h1>list rooms</h1>
+<table>
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(data => data.Rooms[0].RoomNumber)</th>
+        <th>@Html.DisplayNameFor(data => data.Rooms[0].RoomType.TypeName)</th>
+        <th>@Html.DisplayNameFor(data => data.Rooms[0].MaxCapacity)</th>
+        <th>@Html.DisplayNameFor(data => data.Rooms[0].PricePerDay)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var room in Model.Rooms)
+    {
+        <tr>
+            <td>@room.RoomNumber</td>
+            <td>@room.RoomType.TypeName</td>
+            <td>@room.MaxCapacity</td>
+            <td>@room.PricePerDay</td>
+            <td><a asp-page="/Rooms/Add" asp-route-roomId="@room.Id">book this</a></td>
+            @*<td><a asp-page="/Rooms/Update" asp-route-id="@room.Id">update</a></td>*@
+            <td><a asp-page="/Bookings/Add" asp-route-id="@room.Id">book</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

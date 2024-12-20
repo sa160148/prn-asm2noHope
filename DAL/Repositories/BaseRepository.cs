@@ -6,7 +6,7 @@ namespace DAL.Repositories;
 
 public interface IBaseRepository<T> where T : class
 {
-    public List<T> All();
+    public IQueryable<T> GetAll();
     public Task<List<T>> AllAsync();
     public T? Get<TKey>(TKey id);
     public IQueryable<T> Get();
@@ -39,6 +39,11 @@ public class BaseRepository<T>(FuminiHotelA2Context context, DbSet<T>? set = nul
     public List<T> All()
     {
         return context.Set<T>().ToList();
+    }
+
+    public IQueryable<T> GetAll()
+    {
+        return set!;
     }
 
     public async Task<List<T>> AllAsync()

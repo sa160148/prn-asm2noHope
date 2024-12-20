@@ -1,0 +1,32 @@
+@page
+@model VL.Pages.Bookings.Index
+
+@{
+}
+
+<h1>list bookings</h1>
+@*but actualy is list of booking detail*@
+<table>
+    <thead>
+    <tr>@Html.DisplayNameFor(data => data.BookingDetails[0].Booking.BookingDate)</tr>
+    <tr>@Html.DisplayNameFor(data => data.BookingDetails[0].StartDate)</tr>
+    <tr>@Html.DisplayNameFor(data => data.BookingDetails[0].EndDate)</tr>
+    <tr>@Html.DisplayNameFor(data => data.BookingDetails[0].Room.RoomNumber)</tr>
+    <tr>@Html.DisplayNameFor(data => data.BookingDetails[0].Booking.TotalPrice)</tr>
+    </thead> <br/>
+    <tbody>
+    @foreach (var item in Model.BookingDetails)
+    {
+        <tr>
+            <td>@item.Booking.BookingDate</td>
+            <td>@item.StartDate</td>
+            <td>@item.EndDate</td>
+            <td>@item.Room.RoomNumber</td>
+            <td>@item.Booking.TotalPrice</td>
+            <td>
+                <a asp-page="/Bookings/Detail" asp-route-id="@item.Id">detail</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

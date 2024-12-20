@@ -7,7 +7,8 @@ namespace DAL.Builders;
 public class BaseBuilder<T> where T : new()
 {
     private T _instance = new T();
-    
+    private readonly List<Task> _tasks = new ();
+
     /*public BaseBuilder<T> With(Action<T> action)
     {
         action(_instance);
@@ -15,29 +16,42 @@ public class BaseBuilder<T> where T : new()
     }*/
     public BaseBuilder<T> With(string propertyName, object value)
     {
-        var property = typeof(T).GetProperty(propertyName, BindingFlags.Public 
+        var property = typeof(T).GetProperty(propertyName, BindingFlags.Public
                                                            | BindingFlags.Instance /*| BindingFlags.IgnoreCase*/);
         /*property?.SetValue(_instance, value);*/
         if (property != null) property.SetValue(_instance, value);
         else throw new MissingMemberException($"Property {propertyName} not found in {typeof(T).Name}");
         return this;
-    }   
+    }
+    private async Task HandleAsyncPropertySet<TProperty>(PropertyInfo propertyInfo, Task<TProperty> taskValue)
+    {
+        var value = await taskValue;
+        propertyInfo.SetValue(_instance, value);
+    }
     public T Build() => _instance;
+    public async Task<T> BuildAsync()
+    {
+        await Task.WhenAll(_tasks);
+        return _instance;
+    }
 
     /*public BaseBuilder<T> With(Func<T, bool> propertyName, IQueryable<RoomInformation> value)
     {
         throw new NotImplementedException();
     }*/
 }
+
 public static class BaseBuilderX
 {
     public static BaseBuilder<T> With<T, TProperty>(this BaseBuilder<T> builder,
         Expression<Func<T, TProperty>> expression, TProperty value) where T : new()
     {
-        if (expression.Body is MemberExpression memberExpression && memberExpression.Member is PropertyInfo propertyInfo)
-            return builder.With(propertyInfo.Name, value??default(TProperty));
+        if (expression.Body is MemberExpression memberExpression &&
+            memberExpression.Member is PropertyInfo propertyInfo)
+            return builder.With(propertyInfo.Name, value ?? default(TProperty));
         throw new ArgumentException("Expression is not a property");
     }
+
     public static T Build<T>(this BaseBuilder<T> builder) where T : new() => builder.Build();
 }
 

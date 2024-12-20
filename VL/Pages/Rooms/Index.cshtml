@@ -5,10 +5,7 @@
 }
 @using BLL.Services;
 @using BLL.DataObjectTransforms;
-@inject IRoomService RoomsService
 @{
-    IEnumerable<RoomsPageResponse> Roomss = null;
-    Roomss = await RoomsService.GetPage(1, 3);
 }
 <h1>list rooms</h1>
 <a asp-page="Add">add room</a>
@@ -20,7 +17,7 @@
         <th>type</th>
         <th>status</th>
     </tr>
-    @foreach (var room in Roomss)
+    @*@foreach (var room in Rooms)
     {
         <tr>
             <td>@room.Id</td>
@@ -28,7 +25,11 @@
             <td>@room.PricePerDay</td>
             <td>@room.TypeName</td>
             <td>@room.Status</td>
-            <td><a asp-action="Update" asp-route="@room.Id">update</a></td>
+            <td><a asp-page="/Bookings/Add" asp-route-roomId="@room.Id">book this</a></td>
+            $1$<td><a asp-action="Update" asp-route="@room.Id">update</a></td>
+            <td><a asp-action="/Bookings/Add" asp-route="@room.Id">book</a></td>#1#
         </tr>
-    }
+    }*@
 </table>
+@*<script src="~/lib/signalr/dist/browser/signalr.js"></script>*@
+@*<script src="~/js/chat.js"></script>*@

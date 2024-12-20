@@ -4,7 +4,7 @@ namespace BLL.DataObjectTransforms;
 
 public class RoomRequest
 {
-    
+    public double? PricePerDay { get; set; }
 }
 public class RoomCreateRequest
 {
@@ -12,7 +12,7 @@ public class RoomCreateRequest
     public string RoomNumber { get; set; }
     
     public int RoomTypeId { get; set; }
-    public int PricePerDay { get; set; }
+    public double PricePerDay { get; set; }
     public int MaxCapacity { get; set; }
 }
 
@@ -21,7 +21,7 @@ public class RoomModifyRequest
     public int? Id { get; set; }
     public string? RoomNumber { get; set; }
     public int? RoomTypeId { get; set; }
-    public int? PricePerDay { get; set; }
+    public double? PricePerDay { get; set; }
     public int? MaxCapacity { get; set; }
     public string? DetailDescription { get; set; }
     public bool? Status { get; set; }
